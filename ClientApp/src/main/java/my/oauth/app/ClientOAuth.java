@@ -11,31 +11,41 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
 public class ClientOAuth {
+	
+	private static final String ERROR_PAGE = "/error.html";
+	private static final int ERROR_CODE = 404;
+	
 	public String getGreeting() {
 		return "Hello world.";
 	}
-
+	private static void setErrorPage( Context templateContext ) {
+		ErrorPage ep = new ErrorPage();
+		ep.setErrorCode( ERROR_CODE );
+		ep.setLocation( ERROR_PAGE );
+		templateContext.addErrorPage(ep);
+		
+	}
 	public static void main(String[] args) {
 		Tomcat tomcat = new Tomcat();
 		tomcat.setPort(8001);
 		tomcat.getConnector();
 		String contextPath = "";
-		File base = new File(System.getProperty("java.io.tmpdir"));
-		String docBase = base.getAbsolutePath();
 		String templateBase = new File("src/main/resources/templates").getAbsolutePath();
 		Context templateContext = tomcat.addWebapp(contextPath, templateBase);
-
-		ErrorPage ep = new ErrorPage();
-		ep.setErrorCode(404);
-		ep.setLocation("/error.html");
-		templateContext.addErrorPage(ep);
+		
+		setErrorPage( templateContext );
+		
 		templateContext.addMimeMapping("ext", "type");
-
 		tomcat.addWebapp("/js/", new File("src/main/resources/static/js").getAbsolutePath());
 		tomcat.addWebapp("/css/", new File("src/main/resources/static/css").getAbsolutePath());
 
 		Tomcat.addServlet(templateContext, "MainServlet", new MainServlet());
-		templateContext.addServletMappingDecoded("/app", "MainServlet");
+		Tomcat.addServlet(templateContext, "Auth", new Auth());
+		
+		templateContext.addServletMappingDecoded("", "MainServlet");
+		templateContext.addServletMappingDecoded("/auth", "Auth");
+		
+		
 		try {
 			tomcat.start();
 			tomcat.getServer().await();

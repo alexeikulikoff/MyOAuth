@@ -16,7 +16,7 @@ h1{
   background-color: #4CAF50; /* Green */
   border: none;
   color: white;
-  padding: 15px 32px;
+  padding: 12px 22px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -25,5 +25,9 @@ h1{
 }
 .button:hover{
 	 background-color: rgb(78, 154, 6); /* Green */
+	 cursor : pointer; 
+}
+.button:active{
+	 padding: 10px 20px;
 }
 
