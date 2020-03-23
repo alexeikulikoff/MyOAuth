@@ -23,7 +23,7 @@ public class AuthServer {
 	private static void initClient() {
 		Client.setClient_id("oauth-client-1");
 		Client.setClient_secret("oauth-client-secret-1");
-		Client.setRedirect_uris(new String[] { "http://localhost:9001/callback" });
+		Client.setRedirect_uris(new String[] { "http://localhost:8001/callback" });
 		Client.setScope(new String[] { "foo", "bar" });
 	}
 

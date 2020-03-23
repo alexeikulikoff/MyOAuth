@@ -11,6 +11,7 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
 import my.oauth.serlets.Authorizer;
+import my.oauth.serlets.CallBack;
 import my.oauth.serlets.Main;
 import my.oauth.utils.Client;
 
@@ -34,7 +35,7 @@ public class ClientOAuth {
 	private static void initClient() {
 		Client.setClient_id("oauth-client-1");
 		Client.setClient_secret("oauth-client-secret-1");
-		Client.setRedirect_uris(new String[] { "http://localhost:9001/callback" });
+		Client.setRedirect_uris(new String[] { "http://localhost:8001/callback" });
 		Client.setScope(new String[] { "foo", "bar" });
 	}
 
@@ -55,9 +56,11 @@ public class ClientOAuth {
 
 		Tomcat.addServlet(templateContext, "Main", new Main());
 		Tomcat.addServlet(templateContext, "Authorizer", new Authorizer());
+		Tomcat.addServlet(templateContext, "CallBack", new CallBack());
 
 		templateContext.addServletMappingDecoded("", "Main");
 		templateContext.addServletMappingDecoded("/authorize", "Authorizer");
+		templateContext.addServletMappingDecoded("/callback", "CallBack");
 
 		try {
 			tomcat.start();
