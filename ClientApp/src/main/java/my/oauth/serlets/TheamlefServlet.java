@@ -13,7 +13,6 @@ public interface TheamlefServlet {
 		templateResolver.setTemplateMode("xhtml");
 		templateResolver.setSuffix(".html");
 		templateResolver.setCacheTTLMs(3600000L);
-		templateEngine = new TemplateEngine();
 		templateEngine.setTemplateResolver(templateResolver);
 		return templateEngine;
 	}
