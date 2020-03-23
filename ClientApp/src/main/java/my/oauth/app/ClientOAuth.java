@@ -10,42 +10,55 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
+import my.oauth.serlets.Authorizer;
+import my.oauth.serlets.Main;
+import my.oauth.utils.Client;
+
 public class ClientOAuth {
-	
+
 	private static final String ERROR_PAGE = "/error.html";
 	private static final int ERROR_CODE = 404;
-	
+
 	public String getGreeting() {
 		return "Hello world.";
 	}
-	private static void setErrorPage( Context templateContext ) {
+
+	private static void setErrorPage(Context templateContext) {
 		ErrorPage ep = new ErrorPage();
-		ep.setErrorCode( ERROR_CODE );
-		ep.setLocation( ERROR_PAGE );
+		ep.setErrorCode(ERROR_CODE);
+		ep.setLocation(ERROR_PAGE);
 		templateContext.addErrorPage(ep);
-		
+
 	}
+
+	private static void initClient() {
+		Client.setClient_id("oauth-client-1");
+		Client.setClient_secret("oauth-client-secret-1");
+		Client.setRedirect_uris(new String[] { "http://localhost:9001/callback" });
+		Client.setScope(new String[] { "foo", "bar" });
+	}
+
 	public static void main(String[] args) {
+		initClient();
 		Tomcat tomcat = new Tomcat();
 		tomcat.setPort(8001);
 		tomcat.getConnector();
 		String contextPath = "";
 		String templateBase = new File("src/main/resources/templates").getAbsolutePath();
 		Context templateContext = tomcat.addWebapp(contextPath, templateBase);
-		
-		setErrorPage( templateContext );
-		
+
+		setErrorPage(templateContext);
+
 		templateContext.addMimeMapping("ext", "type");
 		tomcat.addWebapp("/js/", new File("src/main/resources/static/js").getAbsolutePath());
 		tomcat.addWebapp("/css/", new File("src/main/resources/static/css").getAbsolutePath());
 
-		Tomcat.addServlet(templateContext, "MainServlet", new MainServlet());
-		Tomcat.addServlet(templateContext, "Auth", new Auth());
-		
-		templateContext.addServletMappingDecoded("", "MainServlet");
-		templateContext.addServletMappingDecoded("/auth", "Auth");
-		
-		
+		Tomcat.addServlet(templateContext, "Main", new Main());
+		Tomcat.addServlet(templateContext, "Authorizer", new Authorizer());
+
+		templateContext.addServletMappingDecoded("", "Main");
+		templateContext.addServletMappingDecoded("/authorize", "Authorizer");
+
 		try {
 			tomcat.start();
 			tomcat.getServer().await();

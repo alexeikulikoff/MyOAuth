@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>MyOAuth Login Form</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body>
+
+	<h1>FaceBrick</h1>
+	<h3>Authorize as a FaceBrick user</h3>
+	<form action="/auth" method="post">
+		<p>Username</p>
+		<input id="user-name" type="text" th:value="${user_name}" />
+		<p>Password</p>
+		<input id="user-password" type="password" />
+
+		<button type="submit" class="button">Login</button>
+
+	</form>
+	<script src="/js/login.js"></script>
+</body>
+
+</html>
+<!--
+https://accounts.google.com/signin/oauth/oauthchooseaccount?client_id=694505692171-31closf3bcmlt59aeulg2j81ej68j6hk.apps.googleusercontent.com&as=sBgaNE8YQP_o2VMWjz8CmA&destination=https%3A%2F%2Fwww.pinterest.ru&approval_state=!ChR4eThySlo4UGZvbHVULVktdXVMWRIfMDFtYmE5SkE0andUOERFdWhZOThQYy1WeE1fZERoYw∙AF-3PDcAAAAAXnN1lzd9S0vvAaaC_26Qo7k_yru-_VXz&oauthgdpr=1&xsrfsig=ChkAeAh8T-2E9vjTItex9OtYZO6vRTsODvLyEg5hcHByb3ZhbF9zdGF0ZRILZGVzdGluYXRpb24SBXNvYWN1Eg9vYXV0aHJpc2t5c2NvcGU&flowName=GeneralOAuthFlow
+-->
+
+

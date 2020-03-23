@@ -4,7 +4,7 @@ html, body{
 }
 
 p{
-	color : green;	
+	color : rgb(46, 52, 54);	
 }
 h1{
 	color : rgb(19, 8, 48);
@@ -12,8 +12,9 @@ h1{
 .error{
 	color : red;
 }
-.button {
+.oauth-button {
   background-color: #4CAF50; /* Green */
+  border-radius : 5px;
   border: none;
   color: white;
   padding: 12px 22px;
@@ -23,11 +24,13 @@ h1{
   font-size: 16px;
 
 }
-.button:hover{
+.oauth-button:hover{
 	 background-color: rgb(78, 154, 6); /* Green */
 	 cursor : pointer; 
+	 text-decoration : none;
+	 color : #ffffff;
 }
-.button:active{
+.oauth-button:active{
 	 padding: 10px 20px;
 }
 

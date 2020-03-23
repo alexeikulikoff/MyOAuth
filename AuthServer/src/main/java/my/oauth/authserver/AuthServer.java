@@ -3,31 +3,38 @@
  */
 package my.oauth.authserver;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
+import my.auth.utils.Client;
+import my.oauth.servlets.Authorizer;
+
 public class AuthServer {
 	public String getGreeting() {
 		return "Hello world.";
 	}
+
 	private static final int port = 8002;
 
+	private static void initClient() {
+		Client.setClient_id("oauth-client-1");
+		Client.setClient_secret("oauth-client-secret-1");
+		Client.setRedirect_uris(new String[] { "http://localhost:9001/callback" });
+		Client.setScope(new String[] { "foo", "bar" });
+	}
+
 	public static void main(String[] args) {
+
+		initClient();
+
 		Tomcat tomcat = new Tomcat();
-		tomcat.setPort( port );
+		tomcat.setPort(port);
 		tomcat.getConnector();
 		String contextPath = "";
-		File base = new File(System.getProperty("java.io.tmpdir"));
-		String docBase = base.getAbsolutePath();
 		String templateBase = new File("src/main/resources/templates").getAbsolutePath();
 		Context templateContext = tomcat.addWebapp(contextPath, templateBase);
 
@@ -37,15 +44,14 @@ public class AuthServer {
 		templateContext.addErrorPage(ep);
 		templateContext.addMimeMapping("ext", "type");
 
-		tomcat.addWebapp("/js/",
-				new File("src/main/resources/static/js").getAbsolutePath());
-		tomcat.addWebapp("/css/",
-				new File("src/main/resources/static/css").getAbsolutePath());
+		tomcat.addWebapp("/js/", new File("src/main/resources/static/js").getAbsolutePath());
+		tomcat.addWebapp("/css/", new File("src/main/resources/static/css").getAbsolutePath());
 
 		Tomcat.addServlet(templateContext, "MainServlet", new MainServlet());
 		Tomcat.addServlet(templateContext, "Authorizer", new Authorizer());
-		templateContext.addServletMappingDecoded("/app", "MainServlet");
+		templateContext.addServletMappingDecoded("", "MainServlet");
 		templateContext.addServletMappingDecoded("/authorize", "Authorizer");
+		templateContext.addServletMappingDecoded("/approve", "Authorizer");
 
 		try {
 			tomcat.start();
@@ -55,20 +61,5 @@ public class AuthServer {
 			e.printStackTrace();
 		}
 
-		/*
-		 * ServerSocket serverSocket; try { serverSocket = new
-		 * ServerSocket(port); System.out.println("Start listenning on port: " +
-		 * port); try (Socket connection = serverSocket.accept()) {
-		 * 
-		 * BufferedReader reader = new BufferedReader(new InputStreamReader(
-		 * connection.getInputStream()) ); String line = null; while((line =
-		 * reader.readLine())!=null) { System.out.println(line); } } catch
-		 * (IOException e) {
-		 * 
-		 * System.out.println(e.getMessage());
-		 * 
-		 * } } catch (IOException e1) { // TODO Auto-generated catch block
-		 * e1.printStackTrace(); }
-		 */
 	}
 }

@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="/css/style.css">
 	<style>
 	body {
-	  padding-top: 0px;
+	  padding-top: 00px;
 	}
 	.navbar-inverse {
 		background-color: #322;
@@ -38,24 +38,32 @@
     <div class="container">
 
       <div class="jumbotron">
-		  <h2>Client information:</h2>
-		 
-		  <ul>
-			  <li><b>client_id:</b> <span th:text="${client_id}"></span></li>
-			  <li><b>client_secret:</b> <span th:text="${client_secret}"></li>
-			  <li><b>scope:</b> <span th:text="${scope}"></span></li>
-			  <li><b>redirect_uri:</b> <span th:text="${redirect_uri}"></span></li>
-		   </ul>
-		 
-		   <h2>Server information:</h2>
-		  <ul>
-			  <li><b>authorization_endpoint:</b> <span th:text="${authorizationEndpoint}"></span></li>
-			  <li><b>token_endpoint:</b> <span th:text="${tokenEndpoint}"></span></li>
-		   </ul>
+		<div th:class="${show_error}">
+			<h2>Error! Unknown client. </h2>
+		</div>
+		<div th:class="${show_aprove}">
+		  <h2>Approve this client?</h2>
+		  <p><b>Name:</b> <span th:text="${client_name}"></span></p>
+		  <p><b>ID:</b> <span th:text="${client_id}"></span></p>
+		  <p><b>URI:</b> <span th:text="${client_uri}"></span></p>
+		
+		   <form class="form" action="/approve" method="POST">
+			   <input type="hidden" name="reqid" th:value="${reqid}" />
+ 				<ul class="list-group" th:each="scope : ${scopes}">
+				  <li class="list-group-item">
+					<div class="form-check">
+					  <input class="form-check-input" type="checkbox" th:name="'scope_' + ${scope}" th:id="'scope_' + ${scope}" checked="checked"><label class="label label-success" th:for="'scope_' + ${scope}" th:text="${scope}"></label>
+ 					</div>
+				  </li>
+ 				</ul>	
+			   <input type="submit" class="btn btn-success" name="approve" value="Approve">
+			   <input type="submit" class="btn btn-danger" name="deny" value="Deny">
+		   </form>
+		
+     
       </div>
-
+ 
     </div><!-- /.container -->
-
 	
 	
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
