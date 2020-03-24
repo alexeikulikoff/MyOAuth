@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>MyOAuth Client Application</title>
+	<meta charset="UTF-8">
+	 <link rel="stylesheet" type="text/css" href="/css/style.css"> 
+  </head>
+  <body>
+
+<h1 >FaceBrick</h1>
+<h3>Wellcome to...</h3>
+
+<p>Username</p>
+<p th:value="${user_name}"/>
+
+<p><a id="btn-auth" class="button" href="/button1">Button1</a></p>
+
+
+<script src="/js/auth.js"></script>
+ </body>
+</html>

@@ -21,10 +21,10 @@ public class Authorizer extends HttpServlet implements TheamlefServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-		String redirect_uri = Client.getRedirect_uris()[0];
-		String code = UUID.randomUUID().toString().substring(0, 8);
-		String url = redirect_uri + "?" + "code=" + code + "&" + "state=" + state;
+		
+		String url = AuthorizationEndpointRequest.getRedirect_uri() + "?"
+					+ "code=" + AuthorizationEndpointRequest.getCode()
+					+ "&" + "state=" + AuthorizationEndpointRequest.getState();
 	
 		resp.sendRedirect(url);
 
@@ -58,7 +58,9 @@ public class Authorizer extends HttpServlet implements TheamlefServlet {
 			String state = req.getParameter("state") ;
 			String redirect_uri = req.getParameter("redirect_uri");
 			String response_type = req.getParameter("response_type");
+			String code = UUID.randomUUID().toString().substring(0, 8);
 			
+			AuthorizationEndpointRequest.setCode(code);
 			AuthorizationEndpointRequest.setClient_id(client_id);
 			AuthorizationEndpointRequest.setState( state );
 			AuthorizationEndpointRequest.setRedirect_uri( redirect_uri );

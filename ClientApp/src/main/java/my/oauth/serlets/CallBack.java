@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -72,7 +73,11 @@ public class CallBack extends HttpServlet implements TheamlefServlet {
 		
 		WebContext ctx = new WebContext(req, resp, getServletConfig().getServletContext(), req.getLocale());
 		TemplateEngine templateEngine = initTemplateEngine(this.getServletContext());
-		System.out.println("callback");
+		
+		req.setAttribute("access_token",token.getAccess_token());
+		req.setAttribute("scope",Arrays.toString(token.getScope()));
+		req.setAttribute("refresh_token","");
+		System.out.println(token);
 
 		templateEngine.process("index", ctx, resp.getWriter());
 	}

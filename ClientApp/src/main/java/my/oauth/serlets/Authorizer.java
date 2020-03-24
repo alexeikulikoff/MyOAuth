@@ -28,9 +28,9 @@ public class Authorizer extends HttpServlet {
 
 		String scope = "";
 		for (String s : scopes) {
-			scope += " " + s;
+			scope += " " +  s;
 		}
-
+		scope = scope.trim();
 		String url_params = "response_type=" + response_type + "&scope=" + scope + "&client_id=" + client_id
 				+ "&redirect_uri=" + redirect_uri + "&state=" + state;
 		resp.sendRedirect(auth_url + "?" + url_params);

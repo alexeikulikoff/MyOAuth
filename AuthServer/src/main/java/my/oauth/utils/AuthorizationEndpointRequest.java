@@ -10,6 +10,7 @@ public class AuthorizationEndpointRequest {
 	private static String[] scope;
 	private static String user;
 	private static String reqid;
+	private static String code;
 	public static String getResponse_type() {
 		return response_type;
 	}
@@ -51,6 +52,12 @@ public class AuthorizationEndpointRequest {
 	}
 	public static void setReqid(String reqid) {
 		AuthorizationEndpointRequest.reqid = reqid;
+	}
+	public static String getCode() {
+		return code;
+	}
+	public static void setCode(String code) {
+		AuthorizationEndpointRequest.code = code;
 	}
 	
 	

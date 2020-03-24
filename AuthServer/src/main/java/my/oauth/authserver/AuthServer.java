@@ -11,6 +11,7 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
 import my.oauth.servlets.Authorizer;
+import my.oauth.servlets.Token;
 import my.oauth.utils.Client;
 
 public class AuthServer {

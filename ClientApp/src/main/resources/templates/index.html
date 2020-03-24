@@ -39,8 +39,8 @@
 
       <div class="jumbotron">
 		  <p>Access token value: <span class="label label-danger" th:text="${access_token}"></span></p>
-		  <p>Scope value: <span class="label label-danger">scope</span></p>
-		  <p>Refresh token value: <span class="label label-danger">refresh_token</span></p>
+		  <p>Scope value: <span class="label label-danger" th:text="${scope}"></span></p>
+		  <p>Refresh token value: <span class="label label-danger" th:text="${refresh_token}"></span></p>
 		  <a class="oauth-button" href="/authorize">Get OAuth Token</a> 
 		  <a class="oauth-button" href="/fetch_resource">Get Protected Resource</a> 
       </div>
