@@ -10,8 +10,8 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
-import my.auth.utils.Client;
 import my.oauth.servlets.Authorizer;
+import my.oauth.utils.Client;
 
 public class AuthServer {
 	public String getGreeting() {
@@ -49,9 +49,11 @@ public class AuthServer {
 
 		Tomcat.addServlet(templateContext, "MainServlet", new MainServlet());
 		Tomcat.addServlet(templateContext, "Authorizer", new Authorizer());
+		Tomcat.addServlet(templateContext, "Token", new Token());
 		templateContext.addServletMappingDecoded("", "MainServlet");
 		templateContext.addServletMappingDecoded("/authorize", "Authorizer");
 		templateContext.addServletMappingDecoded("/approve", "Authorizer");
+		templateContext.addServletMappingDecoded("/token", "Token");
 
 		try {
 			tomcat.start();

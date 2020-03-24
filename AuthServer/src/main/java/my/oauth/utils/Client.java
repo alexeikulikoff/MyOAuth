@@ -1,4 +1,4 @@
-package my.auth.utils;
+package my.oauth.utils;
 
 public class Client {
 	private static String client_id;

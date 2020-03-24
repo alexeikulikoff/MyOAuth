@@ -49,6 +49,11 @@ dependencies {
     compile "org.apache.tomcat:tomcat-jasper:${tomcatVersion}"
     // https://mvnrepository.com/artifact/org.thymeleaf/thymeleaf
 	compile group: 'org.thymeleaf', name: 'thymeleaf', version: "${themLeafVersion}"
+	// https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+	compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+	// https://mvnrepository.com/artifact/com.google.code.gson/gson
+	
+	
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }

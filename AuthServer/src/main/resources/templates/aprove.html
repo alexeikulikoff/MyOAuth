@@ -39,7 +39,8 @@
 
       <div class="jumbotron">
 		<div th:class="${show_error}">
-			<h2>Error! Unknown client. </h2>
+			<h2>Error!</h2>
+			<h3 th:text="${error_message}"></h3>
 		</div>
 		<div th:class="${show_aprove}">
 		  <h2>Approve this client?</h2>
