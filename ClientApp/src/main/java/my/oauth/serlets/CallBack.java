@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -26,10 +27,19 @@ import org.thymeleaf.context.WebContext;
 
 import com.google.gson.Gson;
 
+import my.oauth.app.Token;
 import my.oauth.utils.Client;
 import my.oauth.utils.TokenResponce;
 
 public class CallBack extends HttpServlet implements TheamlefServlet {
+	
+	private Token token;
+	
+	public CallBack( Token token ) {
+		super();
+		this.token = token;
+	}
+	
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -49,27 +59,25 @@ public class CallBack extends HttpServlet implements TheamlefServlet {
 		httppost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 		httppost.setHeader("Authorization", "Basic " + Client.getClient_id() + ":" + Base64.getEncoder().encodeToString(Client.getClient_secret().getBytes()));
 		
-		CloseableHttpResponse response = (CloseableHttpResponse) httpclient.execute(httppost);
-		TokenResponce token = null;
-		try {
+		TokenResponce tokenResponce = null;
+		
+		try( CloseableHttpResponse response = (CloseableHttpResponse) httpclient.execute(httppost) ) {
 			    HttpEntity entity = response.getEntity();
 			    if (entity != null) {
-			        InputStream instream = entity.getContent();
-			       
-			        BufferedReader reader = new BufferedReader( new InputStreamReader(instream) );
-			        try {
+			      try ( InputStream instream = entity.getContent(); 
+			    		BufferedReader reader = new BufferedReader( new InputStreamReader(instream) );){
 			        	String s;
 			        	while((s = reader.readLine())!= null) {
-			        		token = new Gson().fromJson(s, TokenResponce.class);
+			        		tokenResponce = new Gson().fromJson(s, TokenResponce.class);
+			        		
+			        		token.setAccess_token(tokenResponce.getAccess_token());
+			        		token.setScope(tokenResponce.getScope());
+			        		token.setToken_type(tokenResponce.getToken_type());
 			        		
 			        	}
-			        } finally {
-			            instream.close();
 			        }
 			    }
-		} finally {
-		    response.close();
-		}
+		} 
 		
 		WebContext ctx = new WebContext(req, resp, getServletConfig().getServletContext(), req.getLocale());
 		TemplateEngine templateEngine = initTemplateEngine(this.getServletContext());

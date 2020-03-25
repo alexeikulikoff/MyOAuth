@@ -20,7 +20,7 @@ import redis.clients.jedis.Jedis;
 
 import com.google.gson.Gson;
 
-public class Token  extends HttpServlet implements TheamlefServlet {
+public class TokenServlet  extends HttpServlet implements TheamlefServlet {
 
 	private static final long serialVersionUID = 1L;
 
@@ -36,16 +36,18 @@ public class Token  extends HttpServlet implements TheamlefServlet {
 		return res;
 	}
 	
-	private void noSQLSave(String client_id, TokenResponce token) {
+	private void noSQLSave(String access_token, TokenResponce token) {
 		Jedis jedis = new Jedis("localhost");
 		byte[] tokenSerialized = SerializationUtils.serialize( token );
-		jedis.set(client_id.getBytes(), tokenSerialized);
+		jedis.set(access_token.getBytes(), tokenSerialized);
+		jedis.close();
 		
 	}
-	private TokenResponce noSQLExtract(String client_id) {
+	private TokenResponce noSQLExtract(String access_token) {
 		Jedis jedis = new Jedis("localhost");
-		byte[] res = jedis.get(client_id.getBytes());
+		byte[] res = jedis.get(access_token.getBytes());
 		TokenResponce token = (TokenResponce) SerializationUtils.deserialize(res);
+		jedis.close();
 		return token;
 		
 	}
@@ -80,9 +82,9 @@ public class Token  extends HttpServlet implements TheamlefServlet {
 			String access_token = UUID.randomUUID().toString().replace("-", "") ;
 			String token_type = "Bearer";
 			String[] scope = AuthorizationEndpointRequest.getScope();
-			TokenResponce token = new TokenResponce(access_token,token_type,scope);
+			TokenResponce token = new TokenResponce(client_id,access_token,token_type,scope);
 			
-			noSQLSave(client_id, token);
+			noSQLSave(access_token, token);
 			
 			String json = new Gson().toJson(token);
 			resp.setStatus(HttpServletResponse.SC_OK);

@@ -12,6 +12,7 @@ import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
 import my.oauth.serlets.Authorizer;
 import my.oauth.serlets.CallBack;
+import my.oauth.serlets.Fetcher;
 import my.oauth.serlets.Main;
 import my.oauth.utils.Client;
 
@@ -41,6 +42,9 @@ public class ClientOAuth {
 
 	public static void main(String[] args) {
 		initClient();
+		
+		Token token = new Token();
+		
 		Tomcat tomcat = new Tomcat();
 		tomcat.setPort(8001);
 		tomcat.getConnector();
@@ -56,11 +60,13 @@ public class ClientOAuth {
 
 		Tomcat.addServlet(templateContext, "Main", new Main());
 		Tomcat.addServlet(templateContext, "Authorizer", new Authorizer());
-		Tomcat.addServlet(templateContext, "CallBack", new CallBack());
+		Tomcat.addServlet(templateContext, "CallBack", new CallBack( token ));
+		Tomcat.addServlet(templateContext, "Fetcher", new Fetcher( token ));
 
 		templateContext.addServletMappingDecoded("", "Main");
 		templateContext.addServletMappingDecoded("/authorize", "Authorizer");
 		templateContext.addServletMappingDecoded("/callback", "CallBack");
+		templateContext.addServletMappingDecoded("/fetch_resource", "Fetcher");
 
 		try {
 			tomcat.start();

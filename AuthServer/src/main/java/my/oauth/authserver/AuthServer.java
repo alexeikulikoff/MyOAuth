@@ -11,7 +11,7 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
 
 import my.oauth.servlets.Authorizer;
-import my.oauth.servlets.Token;
+import my.oauth.servlets.TokenServlet;
 import my.oauth.utils.Client;
 
 public class AuthServer {
@@ -50,7 +50,7 @@ public class AuthServer {
 
 		Tomcat.addServlet(templateContext, "MainServlet", new MainServlet());
 		Tomcat.addServlet(templateContext, "Authorizer", new Authorizer());
-		Tomcat.addServlet(templateContext, "Token", new Token());
+		Tomcat.addServlet(templateContext, "Token", new TokenServlet());
 		templateContext.addServletMappingDecoded("", "MainServlet");
 		templateContext.addServletMappingDecoded("/authorize", "Authorizer");
 		templateContext.addServletMappingDecoded("/approve", "Authorizer");
