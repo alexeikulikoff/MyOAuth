@@ -60,7 +60,7 @@ public class CallBack extends HttpServlet implements TheamlefServlet {
 		httppost.setHeader("Authorization", "Basic " + Client.getClient_id() + ":" + Base64.getEncoder().encodeToString(Client.getClient_secret().getBytes()));
 		
 		TokenResponce tokenResponce = null;
-		
+		StringBuilder sb = new StringBuilder();
 		try( CloseableHttpResponse response = (CloseableHttpResponse) httpclient.execute(httppost) ) {
 			    HttpEntity entity = response.getEntity();
 			    if (entity != null) {
@@ -68,16 +68,18 @@ public class CallBack extends HttpServlet implements TheamlefServlet {
 			    		BufferedReader reader = new BufferedReader( new InputStreamReader(instream) );){
 			        	String s;
 			        	while((s = reader.readLine())!= null) {
-			        		tokenResponce = new Gson().fromJson(s, TokenResponce.class);
-			        		
-			        		token.setAccess_token(tokenResponce.getAccess_token());
-			        		token.setScope(tokenResponce.getScope());
-			        		token.setToken_type(tokenResponce.getToken_type());
-			        		
+			        		sb.append(s);
 			        	}
 			        }
 			    }
 		} 
+		
+		tokenResponce = new Gson().fromJson( sb.toString() , TokenResponce.class);
+		
+		token.setAccess_token(tokenResponce.getAccess_token());
+		token.setScope(tokenResponce.getScope());
+		token.setToken_type(tokenResponce.getToken_type());
+		
 		
 		WebContext ctx = new WebContext(req, resp, getServletConfig().getServletContext(), req.getLocale());
 		TemplateEngine templateEngine = initTemplateEngine(this.getServletContext());

@@ -9,6 +9,7 @@ import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.tomcat.util.descriptor.web.ErrorPage;
+import org.apache.tomcat.util.descriptor.web.LoginConfig;
 
 import my.oauth.servlets.Main;
 import my.oauth.servlets.ResourceFetcher;
@@ -21,6 +22,11 @@ public class App {
     static final int port = 8003;
     
     public static void main(String[] args) {
+    	
+    	LoginConfig loginConfig = new LoginConfig();
+    	loginConfig.setAuthMethod("BASIC");
+    	loginConfig.setLoginPage("login");
+    	
     	Tomcat tomcat = new Tomcat();
 		tomcat.setPort(port);
 		tomcat.getConnector();
@@ -34,6 +40,9 @@ public class App {
 		templateContext.addErrorPage(ep);
 		templateContext.addMimeMapping("ext", "type");
 
+		templateContext.setLoginConfig(loginConfig);
+		
+		
 		tomcat.addWebapp("/js/", new File("src/main/resources/static/js").getAbsolutePath());
 		tomcat.addWebapp("/css/", new File("src/main/resources/static/css").getAbsolutePath());
 
