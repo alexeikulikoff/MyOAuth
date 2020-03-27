@@ -23,9 +23,6 @@ public class App {
     
     public static void main(String[] args) {
     	
-    	LoginConfig loginConfig = new LoginConfig();
-    	loginConfig.setAuthMethod("BASIC");
-    	loginConfig.setLoginPage("login");
     	
     	Tomcat tomcat = new Tomcat();
 		tomcat.setPort(port);
@@ -40,7 +37,7 @@ public class App {
 		templateContext.addErrorPage(ep);
 		templateContext.addMimeMapping("ext", "type");
 
-		templateContext.setLoginConfig(loginConfig);
+		
 		
 		
 		tomcat.addWebapp("/js/", new File("src/main/resources/static/js").getAbsolutePath());

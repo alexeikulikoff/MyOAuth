@@ -24,13 +24,19 @@ public class Authorizer extends HttpServlet {
 		String client_id = Client.getClient_id();
 		String redirect_uri = Client.getRedirect_uris()[0];
 		String state = UUID.randomUUID().toString().replace("-", "");
+		
+		
 		String auth_url = "http://localhost:8002/authorize";
+		
 
 		String scope = "";
 		for (String s : scopes) {
 			scope += " " +  s;
 		}
+		
 		scope = scope.trim();
+		
+		
 		String url_params = "response_type=" + response_type + "&scope=" + scope + "&client_id=" + client_id
 				+ "&redirect_uri=" + redirect_uri + "&state=" + state;
 		resp.sendRedirect(auth_url + "?" + url_params);

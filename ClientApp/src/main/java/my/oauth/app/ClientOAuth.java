@@ -38,6 +38,11 @@ public class ClientOAuth {
 		Client.setClient_secret("oauth-client-secret-1");
 		Client.setRedirect_uris(new String[] { "http://localhost:8001/callback" });
 		Client.setScope(new String[] { "foo", "bar" });
+		
+	//	Client.setClient_id("0oaqjpiymxKATKlXX0h7");
+	//	Client.setClient_secret("oauth-client-secret-1");
+	//	Client.setRedirect_uris(new String[] { "https://www.oauth.com/playground/authorization-code.html" });
+	//	Client.setScope(new String[] { "photo", "offline_access" });
 	}
 
 	public static void main(String[] args) {
